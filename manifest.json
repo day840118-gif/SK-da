@@ -1,0 +1,37 @@
+{
+  "manifest_version": 3,
+  "name": "SK — Desktop Companion",
+  "version": "1.0.0",
+  "description": "ប៊ូតុងទាញយកលើ YouTube ដែលភ្ជាប់ជាមួយកម្មវិធី SK លើកុំព្យូទ័រ (ត្រូវការបើកកម្មវិធី Desktop ជាមុន)",
+  "default_locale": "en",
+  "permissions": ["activeTab", "scripting", "tabs"],
+  "host_permissions": [
+    "*://*.youtube.com/*",
+    "http://127.0.0.1:8765/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "SK",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://www.youtube.com/watch*"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
