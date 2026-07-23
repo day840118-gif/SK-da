@@ -1,0 +1,40 @@
+name: Build SK Windows EXE
+
+# ដំណើរការស្វ័យប្រវត្តិរាល់ពេល push ទៅ main
+# ឬអាចចុចដំណើរការដោយដៃពី GitHub tab "Actions" > "Run workflow"
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch: {}
+
+jobs:
+  build-windows-exe:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r app/requirements.txt
+
+      - name: Build SK.exe with PyInstaller
+        working-directory: app
+        run: |
+          pyinstaller --noconfirm --onefile --windowed `
+            --name "SK" `
+            --icon "../chrome_extension/icons/app_icon.ico" `
+            sk.py
+
+      - name: Upload SK.exe as downloadable artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: SK-windows-exe
+          path: app/dist/SK.exe
